@@ -162,3 +162,5 @@ cython_debug/
 keys.py
 client_secret.json
 credentials.json
+draft.py
+data.json
