@@ -5,7 +5,7 @@ import json
 import aiofiles as aiofiles
 
 from google_sheet_excel import *
-from keys import bot_token
+from keys import bot_token, username_technical_officer, userid_technical_officer, puzzle_code_page_support
 
 from telegram import ForceReply, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters, CallbackQueryHandler
@@ -13,9 +13,6 @@ from telegram import Bot
 
 bot = Bot(token=bot_token)
 
-username_technical_officer = '@dkilicheva'
-userid_technical_officer = '961260918'
-puzzle_code_page_support = "PuzzleCode"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /start is issued."""
@@ -29,13 +26,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    await update.message.reply_text(rf"Привет! Я бот-помощник - {puzzle_code_page_support}. \n"
+    await update.message.reply_text(f"Привет! Я бот-помощник - {puzzle_code_page_support}. \n"
                                     "Я могу выполнить следующие команды: \n"
                                     "/start - Начать взаимодействие с ботом или сбросить данные. \n"
                                     "/help - Отобразить список доступных команд и их описания. \n"
                                     "/info - Получить информацию. \n"
+                                    "/support - Если нужен помощь, отправь команду, к тебе выйдет сотрудник. \n"
                                     "/TagStudents - Отметить студентов на уроке.\n"
-                                    rf"Если нужен помощью смело обратитесь к {username_technical_officer} ")
+                                    f"Если нужен помощью смело напиши {username_technical_officer}")
 
 
 # отметить учеников на уроке
