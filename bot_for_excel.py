@@ -54,6 +54,13 @@ async def tag_students(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         # #  подготваливаем данные для записи в файл
         # students_dict[student[0]] = "Не был на уроке"
 
+    #  создаем кнопку записать
+    keyboard.append(
+        [
+            InlineKeyboardButton(rf"Записать", callback_data=rf"Записать"),
+        ],
+    )
+
     # создаем новый  файл 'data.json'
     async with aiofiles.open('data.json', mode="w") as file:
         await file.write(json.dumps({}, indent=4, ensure_ascii=False))
@@ -77,11 +84,16 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         async with aiofiles.open('data.json', mode="r") as file:
             content = await file.read()
             data = json.loads(content)
-        data.update({rf"{query.data}": "На уроке", })
-        # записываем новые данные в файл 'data.json'
-        async with aiofiles.open('data.json', mode="w") as file:
-            await file.write(json.dumps(data, indent=4, ensure_ascii=False))
-        # await query.edit_message_text(text=f"Selected option: {query.data}")
+        pprint(data)
+        if query.data == "Записать":
+            write_data = await obj.add_new_rows_in_excel()
+            await query.edit_message_text(text=f"Selected option: {query.data}")
+        else:
+            data.update({rf"{query.data}": "На уроке", })
+            # записываем новые данные в файл 'data.json'
+            async with aiofiles.open('data.json', mode="w") as file:
+                await file.write(json.dumps(data, indent=4, ensure_ascii=False))
+
     except:
         await query.message.reply_text(
             rf"произашло техническая ошибка, отметье учеников по ссылке в google excel")
